@@ -2,12 +2,12 @@ package resume
 
 import (
 	"encoding/json"
+	"log"
+	"net/http"
 	"tbactl/control/common"
 	"tbactl/service/dbcomm"
 	"tbactl/service/resume"
-
-	"log"
-	"net/http"
+	"time"
 )
 
 /*
@@ -41,19 +41,18 @@ func GetResumeList(w http.ResponseWriter, req *http.Request) {
 
 func AddResume(w http.ResponseWriter, req *http.Request) {
 	log.Println("AddResume===============>")
-	var search resume.Search
-	err := json.NewDecoder(req.Body).Decode(&search)
+	var form resume.Form
+	err := json.NewDecoder(req.Body).Decode(&form)
 	if err != nil {
 		log.Println(err.Error())
 		return
 	}
 	defer req.Body.Close()
-	log.Println("Search====>", search)
+	log.Println("form====>", form)
 	r := resume.New(dbcomm.GetDB(), resume.DEBUG)
-	list, err := r.GetList(search)
-	tl, err := r.GetTotal(search)
-	r.Total = tl
-	common.Write_Response(list, w, req)
+	form.Form.PostNo = time.Now().UnixNano()
+	r.InsertEntity(form.Form)
+	common.Write_Response("OK", w, req)
 }
 
 /*
@@ -96,8 +95,6 @@ func GetResume(w http.ResponseWriter, req *http.Request) {
 	defer req.Body.Close()
 	log.Println("Search====>", search)
 	r := resume.New(dbcomm.GetDB(), resume.DEBUG)
-	list, err := r.GetList(search)
-	tl, err := r.GetTotal(search)
-	r.Total = tl
-	common.Write_Response(list, w, req)
+	l, err := r.Get(search)
+	common.Write_Response(l, w, req)
 }

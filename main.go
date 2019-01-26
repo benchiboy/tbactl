@@ -9,6 +9,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"tbactl/control/basecode"
+	"tbactl/control/login"
 	"tbactl/control/resume"
 	"tbactl/service/dbcomm"
 
@@ -22,13 +24,14 @@ var (
 func go_WebServer() {
 	log.Println("Listen Service start...")
 
-	//http.HandleFunc("/getHomeData", home.GetHomeData)
+	http.HandleFunc("/wxLogin", login.WxLogin)
+
+	http.HandleFunc("/getcodeList", basecode.GetBasecodeList)
+
 	http.HandleFunc("/getResumeList", resume.GetResumeList)
 	http.HandleFunc("/addResume", resume.AddResume)
 	http.HandleFunc("/edtResume", resume.EdtResume)
 	http.HandleFunc("/getResume", resume.GetResume)
-
-	//http.HandleFunc("/wxLogin/", login.WxLogin)
 
 	http_srv = &http.Server{
 		Addr:    ":8000",
