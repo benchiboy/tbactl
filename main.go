@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"tbactl/control/account"
 	"tbactl/control/basecode"
 	"tbactl/control/login"
 	"tbactl/control/resume"
@@ -32,6 +33,8 @@ func go_WebServer() {
 	http.HandleFunc("/addResume", resume.AddResume)
 	http.HandleFunc("/edtResume", resume.EdtResume)
 	http.HandleFunc("/getResume", resume.GetResume)
+
+	http.HandleFunc("/addAccount", account.AddAccount)
 
 	http_srv = &http.Server{
 		Addr:    ":8000",
