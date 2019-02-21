@@ -12,7 +12,9 @@ import (
 	"tbactl/control/account"
 	"tbactl/control/basecode"
 	"tbactl/control/login"
+	"tbactl/control/position"
 	"tbactl/control/resume"
+
 	"tbactl/service/dbcomm"
 
 	"gopkg.in/natefinch/lumberjack.v2"
@@ -34,11 +36,15 @@ func go_WebServer() {
 	http.HandleFunc("/edtResume", resume.EdtResume)
 	http.HandleFunc("/getResume", resume.GetResume)
 
+	http.HandleFunc("/getPositionList", position.GetPositionList)
+	http.HandleFunc("/addPosition", position.AddPosition)
+	http.HandleFunc("/edtPosition", position.EdtPosition)
+	http.HandleFunc("/getPosition", position.GetPosition)
+
 	http.HandleFunc("/addAccount", account.AddAccount)
 
 	http_srv = &http.Server{
-		Addr:    ":8000",
-		Handler: http.DefaultServeMux,
+		Addr: ":8000",
 	}
 
 	if err := http_srv.ListenAndServe(); err != nil {

@@ -1,277 +1,279 @@
-#ÕË»§ÆÀÂÛĞÅÏ¢±í
+-- Create syntax for TABLE 'tba_account_comments'
 CREATE TABLE `tba_account_comments` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `comment_no` bigint(20) DEFAULT '0' COMMENT 'ÆÀÂÛ±àºÅ',
-  `user_id` int(11) DEFAULT '0' COMMENT '·¢±íÆÀÂÛµÄÕË»§ID',
-  `flow_no` int(11) DEFAULT '0' COMMENT 'ÆÀÂÛµÄÁ÷³Ì',
-  `old_comment_no` int(11) DEFAULT  '0'  COMMENT  'Èç¹ûÊÇÄ¬ÈÏÖµ£¬ÆÀÂÛÕë¶ÔÕĞÆ¸¸ÚÎ»£¬·ñÔòÊÇÄ³¸öÆÀÂÛµÄ»Ø¸´',
-  `comment_time` datetime DEFAULT NULL COMMENT 'ÆÀÂÛÊ±¼ä',
-  `comment_desc`  varchar(1000)  default ''   COMMENT 'ÆÀÂÛÃèÊö',
-  `insert_time` datetime DEFAULT NULL COMMENT '²åÈëÊ±¼ä',
-  `update_time` datetime DEFAULT NULL COMMENT '¸üĞÂÊ±¼ä',
-  `version` int(11) unsigned DEFAULT '0' COMMENT '°æ±¾',
+  `comment_no` bigint(20) DEFAULT '0' COMMENT 'è¯„è®ºç¼–å·',
+  `user_id` int(11) DEFAULT '0' COMMENT 'å‘è¡¨è¯„è®ºçš„è´¦æˆ·ID',
+  `old_comment_no` int(11) DEFAULT '0' COMMENT 'å¦‚æœæ˜¯é»˜è®¤å€¼ï¼Œè¯„è®ºé’ˆå¯¹æ‹›è˜å²—ä½ï¼Œå¦åˆ™æ˜¯æŸä¸ªè¯„è®ºçš„å›å¤',
+  `comment_time` datetime DEFAULT NULL COMMENT 'è¯„è®ºæ—¶é—´',
+  `comment_desc` varchar(1000) DEFAULT '' COMMENT 'è¯„è®ºæè¿°',
+  `insert_time` datetime DEFAULT NULL COMMENT 'æ’å…¥æ—¶é—´',
+  `update_time` datetime DEFAULT NULL COMMENT 'æ›´æ–°æ—¶é—´',
+  `version` int(11) unsigned DEFAULT '0' COMMENT 'ç‰ˆæœ¬',
   PRIMARY KEY (`id`),
   KEY `idx_comment_no` (`comment_no`),
   KEY `idx_user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='ÓÃ»§ÆÀÂÛĞÅÏ¢±í';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='ç”¨æˆ·è¯„è®ºä¿¡æ¯è¡¨';
 
-#ÕË»§½»Ò×Á÷Ë®ĞÅÏ¢±í
+-- Create syntax for TABLE 'tba_account_flows'
 CREATE TABLE `tba_account_flows` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) unsigned DEFAULT '0' COMMENT 'ÕË»§ID',
-  `trxn_no` bigint(20)  NOT NULL  COMMENT '½»Ò×Á÷Ë®ºÅ',
-  `trxn_date` datetime DEFAULT NULL COMMENT '½»Ò×Ê±¼ä',
-  `trxn_amt` decimal(15,2) DEFAULT '0.00' COMMENT '½»Ò×½ğ¶î',
-  `trxn_type` varchar(10) DEFAULT '' COMMENT '½»Ò×ÀàĞÍ£¬°üÀ¨×Ê½ğ½»Ò×£¬ĞéÄâÉÌÆ·½»Ò×',
-  `proc_status` varchar(10) DEFAULT '' COMMENT '½»Ò×´¦Àí×´Ì¬ ',
-  `proc_msg` varchar(10) DEFAULT '' COMMENT '½»Ò×´¦Àí½á¹ûÔ­Òò',
-  `goods_no` varchar(10) DEFAULT '' COMMENT 'ÉÌÆ·±àºÅ',
-  `discount_rate` decimal(5,3) DEFAULT '0.000' COMMENT 'ÉÌÆ·ÕÛ¿Û±ÈÀı',
-  `promotion_no`  varchar(10) DEFAULT ''  COMMENT '´ÙÏú»î¶¯±àºÅ',
-  `account_bal` decimal(15,2) DEFAULT '0.00' COMMENT 'ÕË»§Óà¶î',
-  `trxn_memo` varchar(50) DEFAULT '' COMMENT '½»Ò×±¸×¢',
-  `done_date` datetime DEFAULT NULL COMMENT '½»Ò×È·ÈÏÊ±¼ä',
-  `insert_time` datetime DEFAULT NULL COMMENT '²åÈëÊ±¼ä',
-  `update_time` datetime DEFAULT NULL COMMENT '¸üĞÂÊ±¼ä',
-  `update_user` varchar(50) DEFAULT '' COMMENT 'ÈË¹¤µ÷Õû½»Ò×µÄÓÃ»§ID',
-  `version` int(11) unsigned DEFAULT '0' COMMENT '°æ±¾',
+  `user_id` int(11) unsigned DEFAULT '0' COMMENT 'è´¦æˆ·ID',
+  `trxn_no` bigint(20) NOT NULL COMMENT 'äº¤æ˜“æµæ°´å·',
+  `trxn_date` datetime DEFAULT NULL COMMENT 'äº¤æ˜“æ—¶é—´',
+  `trxn_amt` decimal(15,2) DEFAULT '0.00' COMMENT 'äº¤æ˜“é‡‘é¢',
+  `trxn_type` varchar(10) DEFAULT '' COMMENT 'äº¤æ˜“ç±»å‹ï¼ŒåŒ…æ‹¬èµ„é‡‘äº¤æ˜“ï¼Œè™šæ‹Ÿå•†å“äº¤æ˜“',
+  `proc_status` varchar(10) DEFAULT '' COMMENT 'äº¤æ˜“å¤„ç†çŠ¶æ€ ',
+  `proc_msg` varchar(10) DEFAULT '' COMMENT 'äº¤æ˜“å¤„ç†ç»“æœåŸå› ',
+  `goods_no` varchar(10) DEFAULT '' COMMENT 'å•†å“ç¼–å·',
+  `discount_rate` decimal(5,3) DEFAULT '0.000' COMMENT 'å•†å“æŠ˜æ‰£æ¯”ä¾‹',
+  `promotion_no` varchar(10) DEFAULT '' COMMENT 'ä¿ƒé”€æ´»åŠ¨ç¼–å·',
+  `account_bal` decimal(15,2) DEFAULT '0.00' COMMENT 'è´¦æˆ·ä½™é¢',
+  `trxn_memo` varchar(50) DEFAULT '' COMMENT 'äº¤æ˜“å¤‡æ³¨',
+  `done_date` datetime DEFAULT NULL COMMENT 'äº¤æ˜“ç¡®è®¤æ—¶é—´',
+  `insert_time` datetime DEFAULT NULL COMMENT 'æ’å…¥æ—¶é—´',
+  `update_time` datetime DEFAULT NULL COMMENT 'æ›´æ–°æ—¶é—´',
+  `update_user` varchar(50) DEFAULT '' COMMENT 'äººå·¥è°ƒæ•´äº¤æ˜“çš„ç”¨æˆ·ID',
+  `version` int(11) unsigned DEFAULT '0' COMMENT 'ç‰ˆæœ¬',
   PRIMARY KEY (`id`),
   KEY `idx_user_id` (`user_id`),
   KEY `idx_trxn_date` (`trxn_date`),
   KEY `idx_proc_status` (`proc_status`),
   KEY `idx_trxn_no` (`trxn_no`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='ÓÃ»§½»Ò×ÀúÊ·±í';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='ç”¨æˆ·äº¤æ˜“å†å²è¡¨';
 
-#ÕË»§µÇÂ¼ÈÕÖ¾Á÷Ë®
+-- Create syntax for TABLE 'tba_account_logins'
 CREATE TABLE `tba_account_logins` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) unsigned DEFAULT '0' COMMENT 'ÕË»§ID',
-  `login_no` bigint(20)  NOT NULL  COMMENT 'µÇÂ¼Á÷Ë®ºÅ',
-  `login_time` datetime DEFAULT NULL COMMENT 'µÇÂ¼Ê±¼ä',
-  `login_desc` varchar(30) DEFAULT '' COMMENT 'µÇÂ¼ÃèÊö',
-  `login_result` tinyint(4) DEFAULT '0' COMMENT 'µÇÂ¼½á¹û',
-  `device_ip` varchar(30) DEFAULT '' COMMENT 'Éè±¸ip',
-  `device_type` tinyint(4) DEFAULT '0' COMMENT 'Éè±¸ÀàĞÍ£º1£ºANDROID, 2£ºOS, 3£ºPC',
-  `device_os` varchar(30) DEFAULT '' COMMENT 'Éè±¸²Ù×÷ÏµÍ³',
-  `device_os_ver` varchar(30) DEFAULT '' COMMENT 'Éè±¸²Ù×÷ÏµÍ³°æ±¾',
-  `device_id` varchar(30) DEFAULT '' COMMENT 'Éè±¸id',
-  `latitude` varchar(20) DEFAULT '' COMMENT 'Î³¶È',
-  `longitude` varchar(20) DEFAULT '' COMMENT '¾­¶È',
-  `insert_time` datetime DEFAULT NULL COMMENT '²åÈëÊ±¼ä',
-  `version` int(11) unsigned DEFAULT '0' COMMENT '°æ±¾',
+  `user_id` int(11) unsigned DEFAULT '0' COMMENT 'è´¦æˆ·ID',
+  `login_no` bigint(20) NOT NULL COMMENT 'ç™»å½•æµæ°´å·',
+  `login_time` datetime DEFAULT NULL COMMENT 'ç™»å½•æ—¶é—´',
+  `login_desc` varchar(30) DEFAULT '' COMMENT 'ç™»å½•æè¿°',
+  `login_result` tinyint(4) DEFAULT '0' COMMENT 'ç™»å½•ç»“æœ',
+  `device_ip` varchar(30) DEFAULT '' COMMENT 'è®¾å¤‡ip',
+  `device_type` tinyint(4) DEFAULT '0' COMMENT 'è®¾å¤‡ç±»å‹ï¼š1ï¼šANDROID, 2ï¼šOS, 3ï¼šPC',
+  `device_os` varchar(30) DEFAULT '' COMMENT 'è®¾å¤‡æ“ä½œç³»ç»Ÿ',
+  `device_os_ver` varchar(30) DEFAULT '' COMMENT 'è®¾å¤‡æ“ä½œç³»ç»Ÿç‰ˆæœ¬',
+  `device_id` varchar(30) DEFAULT '' COMMENT 'è®¾å¤‡id',
+  `latitude` varchar(20) DEFAULT '' COMMENT 'çº¬åº¦',
+  `longitude` varchar(20) DEFAULT '' COMMENT 'ç»åº¦',
+  `insert_time` datetime DEFAULT NULL COMMENT 'æ’å…¥æ—¶é—´',
+  `version` int(11) unsigned DEFAULT '0' COMMENT 'ç‰ˆæœ¬',
   PRIMARY KEY (`id`),
   KEY `idx_user_id` (`user_id`),
   KEY `idx_login_no` (`login_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='ÓÃ»§µÇÂ¼ÕËºÅ±í';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='ç”¨æˆ·ç™»å½•è´¦å·è¡¨';
 
-#ÕË»§²Ù×÷ÈÕÖ¾Á÷Ë®
-CREATE TABLE `tba_account_actions` (
+-- Create syntax for TABLE 'tba_account_others'
+CREATE TABLE `tba_account_others` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) unsigned DEFAULT '0' COMMENT 'ÕË»§ID',
-  `login_no` bigint(20)  NOT NULL  COMMENT 'µÇÂ¼Á÷Ë®ºÅ',
-  `action_no` bigint(20)  unsigned DEFAULT '0'  COMMENT 'ÓÃ»§²Ù×÷Á÷Ë®ºÅ',
-  `action_type`  tinyint(4) DEFAULT '0'  COMMENT '¶¯×÷ÀàĞÍ£º1£º×Ö¶ÎÉÏ£¬2:°´Å¥ÉÏ',
-  `flow_no`  int(11) unsigned DEFAULT '0' COMMENT 'Á÷³Ì±àºÅ',
-  `service_point_no` smallint(6)    DEFAULT '0' COMMENT '·şÎñµã±àºÅ',
-  `field_name`  varchar(30) DEFAULT '20'  COMMENT '×Ö¶ÎÃû³Æ',
-  `duration`   smallint(6)    DEFAULT '0'    COMMENT 'Í£ÁôÊ±¼ä£¬µ¥Î»Ãë',
-  `insert_time` datetime DEFAULT NULL COMMENT '²åÈëÊ±¼ä',
-  `version` int(11) unsigned DEFAULT '0' COMMENT '°æ±¾',
+  `user_id` int(11) unsigned DEFAULT '0' COMMENT 'ç”¨æˆ·ID',
+  `post_no` bigint(20) DEFAULT '0' COMMENT 'æŠ•é€è®°å½•ç¼–å·',
+  `other_desc` varchar(500) DEFAULT '' COMMENT 'è‡ªå·±å·¥ä½œæè¿°',
+  `other_url1` varchar(500) DEFAULT '' COMMENT 'ä¸ªäººå…¶ä»–é™„ä»¶ï¼Œå›¾ç‰‡1',
+  `other_url2` varchar(500) DEFAULT '' COMMENT 'ä¸ªäººå…¶ä»–é™„ä»¶ï¼Œå›¾ç‰‡2',
+  `other_url3` varchar(500) DEFAULT '' COMMENT 'ä¸ªäººå…¶ä»–é™„ä»¶ï¼Œå›¾ç‰‡3',
+  `insert_time` datetime DEFAULT NULL COMMENT 'æ’å…¥æ—¶é—´',
+  `update_time` datetime DEFAULT NULL COMMENT 'æ›´æ–°æ—¶é—´',
+  `version` int(11) unsigned DEFAULT '0' COMMENT 'ç‰ˆæœ¬',
   PRIMARY KEY (`id`),
   KEY `idx_user_id` (`user_id`),
-  KEY `idx_login_no` (`login_no`),
-  KEY `idx_action_no` (`action_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='ÕË»§²Ù×÷ÈÕÖ¾Á÷Ë®';
+  KEY `idx_post_no` (`post_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='æ±‚èŒè€…å…¶ä»–é™„ä»¶ææ–™';
 
-#ÕË»§ÎÒµÄ²Ù×÷¼ÇÂ¼±í
-CREATE TABLE `tba_account_posts` (
+-- Create syntax for TABLE 'tba_account_post_positions'
+drop tba_account_post_positions;
+CREATE TABLE `tba_account_post_positions` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `post_no` bigint(20) DEFAULT '0' COMMENT 'Í¶ËÍ¼ÇÂ¼±àºÅ',
-  `user_id` int(11) unsigned DEFAULT '0' COMMENT '²Ù×÷µÄÕË»§ID',
-  `src_user_id` int(11) DEFAULT '0'  COMMENT '²Ù×÷µÄ¶ÔÏóÕË»§ID',
-  `dst_user_id` int(11) DEFAULT '0'  COMMENT 'Ä¿µÄÕË»§ID',
-  `flow_no`  int(11) DEFAULT '0' COMMENT 'Á÷³Ì±àºÅ±àºÅ',
-  `insert_time` datetime DEFAULT NULL COMMENT '²åÈëÊ±¼ä',
-  `update_time` datetime DEFAULT NULL COMMENT '¸üĞÂÊ±¼ä',
-  `version` int(11) unsigned DEFAULT '0' COMMENT '°æ±¾',
+  `publish_no` varchar(20) DEFAULT '0' COMMENT 'èŒä½å‘å¸ƒç¼–å·',
+  `user_id` int(11) DEFAULT '0' COMMENT 'ç”¨æˆ·ID',
+  `position_name` varchar(50) DEFAULT '' COMMENT 'èŒä½åç§°',
+  `position_desc` varchar(1000) DEFAULT '' COMMENT 'èŒä½ä»»èŒè¦æ±‚',
+  `position_class` varchar(10) DEFAULT '' COMMENT 'èŒä½ç±»åˆ«',
+  `publish_time` datetime DEFAULT NULL COMMENT 'èŒä½å‘å¸ƒæ—¶é—´',
+  `expire_time` date DEFAULT NULL COMMENT 'èŒä½åˆ°æœŸæ—¥',
+  `rewards` varchar(150) DEFAULT '' COMMENT 'ç¦åˆ©å¾…é‡æ ‡ç­¾',
+  `salary_min` decimal(15,2) DEFAULT '0.00' COMMENT 'æœ€å°è–ªæ°´',
+  `salary_max` decimal(15,2) DEFAULT '0.00' COMMENT 'æœ€å¤§è–ªæ°´',
+  `city` varchar(50) DEFAULT '' COMMENT 'èŒä½è¦æ±‚åŸå¸‚',
+  `school_level` varchar(10) DEFAULT '' COMMENT 'è¦æ±‚å­¦å†',
+  `work_years` varchar(10) DEFAULT NULL COMMENT 'è¦æ±‚æœ€å°å·¥ä½œå¹´é™',
+  `work_addr` varchar(150) DEFAULT '' COMMENT 'å·¥ä½œåœ°ç‚¹',
+  `contact_name` varchar(50) DEFAULT '' COMMENT 'è”ç³»äºº',
+  `contact_phone` varchar(30) DEFAULT '' COMMENT 'è”ç³»äººç”µè¯',
+  `insert_time` datetime DEFAULT NULL COMMENT 'æ’å…¥æ—¶é—´',
+  `update_time` datetime DEFAULT NULL COMMENT 'æ›´æ–°æ—¶é—´',
+  `version` int(11) unsigned DEFAULT '0' COMMENT 'ç‰ˆæœ¬',
   PRIMARY KEY (`id`),
-  KEY `idx_user_id` (`src_user_id`),
-  KEY `idx_post_no (`post_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='ÕË»§ÎÒµÄ²Ù×÷¼ÇÂ¼±í';
+  KEY `idx_publish_no` (`publish_no`),
+  KEY `idx_user_id` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8 COMMENT='æ‹›è˜è€…å‘å¸ƒèŒä½è®°å½•';
 
-#ÕË»§ĞÅÏ¢±í
-DROP TABLE tba_accounts;
+-- Create syntax for TABLE 'tba_account_post_resumes'
+CREATE TABLE `tba_account_post_resumes` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `post_no` bigint(20) DEFAULT '0' COMMENT 'æŠ•é€è®°å½•ç¼–å·',
+  `user_id` int(11) unsigned DEFAULT '0' COMMENT 'æŠ•é€ç®€å†çš„ç”¨æˆ·ID',
+  `user_name` varchar(50) DEFAULT '' COMMENT 'æ±‚èŒè€…å§“å',
+  `user_sex` tinyint(4) DEFAULT '0' COMMENT 'æ±‚èŒè€…æ€§åˆ«:1 ç”· 2ï¼šå¥³',
+  `user_phone` varchar(21) DEFAULT '' COMMENT 'æ‰‹æœºå·ç ',
+  `work_years` varchar(10) DEFAULT '' COMMENT 'å·¥ä½œå¹´é™',
+  `edu_level` varchar(10) DEFAULT '' COMMENT 'æœ€é«˜å­¦å†',
+  `want_position_no` varchar(10) DEFAULT '' COMMENT 'æ±‚èŒæœŸæœ›çš„èŒä½',
+  `want_salary` varchar(10) DEFAULT '' COMMENT 'æ±‚èŒæœŸæœ›çš„è–ªèµ„',
+  `want_area` varchar(10) DEFAULT '' COMMENT 'æ±‚èŒæœŸæœ›çš„åŒºåŸŸ',
+  `insert_time` datetime DEFAULT NULL COMMENT 'æ’å…¥æ—¶é—´',
+  `update_time` datetime DEFAULT NULL COMMENT 'æ›´æ–°æ—¶é—´',
+  `version` int(11) unsigned DEFAULT '0' COMMENT 'ç‰ˆæœ¬',
+  PRIMARY KEY (`id`),
+  KEY `idx_user_id` (`user_id`),
+  KEY `idx_post_no` (`post_no`)
+) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8 COMMENT='æ±‚èŒè€…ï¼ˆä¸ªäººï¼‰æŠ•é€ç®€å†è®°å½•è¡¨';
+
+-- Create syntax for TABLE 'tba_account_projects'
+CREATE TABLE `tba_account_projects` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned DEFAULT '0' COMMENT 'ç”¨æˆ·ID',
+  `post_no` bigint(20) DEFAULT '0' COMMENT 'æŠ•é€è®°å½•ç¼–å·',
+  `project_name` varchar(100) DEFAULT '' COMMENT 'é¡¹ç›®åç§°',
+  `project_begin` date DEFAULT NULL COMMENT 'å‚åŠ é¡¹ç›®å¼€å§‹æ—¥æœŸ',
+  `project_end` date DEFAULT NULL COMMENT 'å‚åŠ é¡¹ç›®ç»“æŸæ—¥æœŸ',
+  `project_desc` varchar(500) DEFAULT '' COMMENT 'è‡ªå·±å·¥ä½œæè¿°',
+  `project_url1` varchar(200) DEFAULT '' COMMENT 'é¡¹ç›®è¯­éŸ³æˆ–å›¾ç‰‡ä»‹ç»',
+  `project_url2` varchar(200) DEFAULT '' COMMENT 'é¡¹ç›®æˆæœURL',
+  `project_url3` varchar(200) DEFAULT '' COMMENT 'é¡¹ç›®æˆæœURL',
+  `insert_time` datetime DEFAULT NULL COMMENT 'æ’å…¥æ—¶é—´',
+  `update_time` datetime DEFAULT NULL COMMENT 'æ›´æ–°æ—¶é—´',
+  `version` int(11) unsigned DEFAULT '0' COMMENT 'ç‰ˆæœ¬',
+  PRIMARY KEY (`id`),
+  KEY `idx_user_id` (`user_id`),
+  KEY `idx_post_no` (`post_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='æ±‚èŒè€…é¡¹ç›®ç»éªŒè¡¨';
+
+-- Create syntax for TABLE 'tba_account_recommends'
+CREATE TABLE `tba_account_recommends` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned DEFAULT '0' COMMENT 'æ¨é€ç çš„å‘èµ·è€…',
+  `recommend_no` bigint(20) DEFAULT '0' COMMENT 'èŒä½å‘å¸ƒç¼–å·',
+  `recommend_time` datetime DEFAULT NULL COMMENT 'æ¨å¹¿æ—¶é—´',
+  `recommend_type` tinyint(4) DEFAULT '0' COMMENT '1:æ³¨å†Œæ¨èï¼Œ2ï¼šæ¨é€å²—ä½è‡³æ±‚èŒè€…ï¼Œ3ï¼šæ¨é€æ±‚èŒè€…è‡³æ‹›è˜è€…',
+  `insert_time` datetime DEFAULT NULL COMMENT 'æ’å…¥æ—¶é—´',
+  `update_time` datetime DEFAULT NULL COMMENT 'æ›´æ–°æ—¶é—´',
+  `version` int(11) unsigned DEFAULT '0' COMMENT 'ç‰ˆæœ¬',
+  PRIMARY KEY (`id`),
+  KEY `idx_user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='åˆä¼™è€…æ¨é€å†å²è¡¨';
+
+-- Create syntax for TABLE 'tba_accounts'
 CREATE TABLE `tba_accounts` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) unsigned DEFAULT '0' COMMENT 'µÇÂ¼ÕË»§ID',
-  `partner_user_id` varchar(36)  DEFAULT '' COMMENT 'µÚÈı·½µÄÓÃ»§ID',
-  `parent_user_id` int(11) DEFAULT '0' COMMENT 'ÍÆ¼öÓÃ»§ID',
-  `user_role` tinyint(4) DEFAULT '0' COMMENT 'ÓÃ»§µ±Ç°½ÇÉ« 1£ºÇóÖ°Õß 2£ºÓ¦Æ¸Õß  3£ººÏ»ïÈË',
-  `user_status` tinyint(4) DEFAULT '0' COMMENT 'µ±Ç°ÓÃ»§×´Ì¬: 0£º Õı³£ 1£ºÃÜÂë´íÎóËø¶¨,2£ºÕË»§ÈË¹¤¶³½á£¨×Ê½ğ²»¿É½ø³ö£©,3 :ÕË»§Ö¹¸¶£¨ÕË»§²»ÔÊĞíÏû·Ñ£©, 4£ºÕË»§Ö¹ Èë£¨ÕË»§²»ÔÊ³äÖµ£©',
-  `avatar_url` varchar(100) DEFAULT '' COMMENT 'ÓÃ»§Í·ÏñURL',
-  `login_mode` tinyint(4) DEFAULT '0' COMMENT 'µÇÂ¼·½Ê½£º1£ºÎ¢ĞÅ£¬2£ºÊÖ»ú×¢²á£¬3£ºÎ¢²©',
-  `login_name` varchar(50) DEFAULT '' COMMENT 'µÇÂ¼ÕËºÅ',
-  `login_password` varchar(50) DEFAULT '' COMMENT 'ÃÜÂë',
-  `error_count` tinyint(4) DEFAULT '0' COMMENT 'ÃÜÂë´íÎó´ÎÊı',
-  `last_login_time` datetime DEFAULT NULL COMMENT 'ÉÏ´ÎµÇÂ¼Ê±¼ä',
-  `last_device_id`    varchar(30) DEFAULT ''  COMMENT 'ÉÏ´ÎµÇÂ¼Éè±¸ID',
-  `account_bal` decimal(15,2) DEFAULT '0.00' COMMENT 'ÕË»§Óà¶î-×Ê½ğ',
-  `goods_count` decimal(15,2) DEFAULT '0.00' COMMENT 'ÉÌÆ·ÊıÁ¿-ĞéÄâ',
-  `device_ip` varchar(30) DEFAULT '' COMMENT ' Ê×´ÎÉè±¸ip',
-  `device_type` tinyint(4) DEFAULT '0' COMMENT 'Ê×´ÎÉè±¸ÀàĞÍ£º1£ºANDROID, 2£ºOS, 3£ºPC',
-  `device_os` varchar(30) DEFAULT '' COMMENT 'Ê×´ÎÉè±¸²Ù×÷ÏµÍ³',
-  `device_os_ver` varchar(30) DEFAULT '' COMMENT 'Ê×´ÎÉè±¸²Ù×÷ÏµÍ³°æ±¾',
-  `device_id` varchar(30) DEFAULT '' COMMENT 'Ê×´ÎÉè±¸id',
-  `latitude` varchar(20) DEFAULT '' COMMENT 'Ê×´ÎÎ³¶È',
-  `longitude` varchar(20) DEFAULT '' COMMENT 'Ê×´Î¾­¶È',
-  `market` varchar(30) DEFAULT '' COMMENT 'Ó¦ÓÃÊĞ³¡',
-  `user_channel` varchar(20) DEFAULT '' COMMENT '»ñ¿ÍÇşµÀ',
-  `random_no` int(11) DEFAULT '0' COMMENT 'ÓÃ»§Ëæ»úÊı',
-  `region_no`   varchar(15) DEFAULT '' COMMENT 'ÓÃ»§¸ºÔğµÄÇøÓò±àºÅ',
-  `customer_id` int(11) unsigned DEFAULT '0' COMMENT '¿Í»§ID',
-  `created_time` datetime DEFAULT NULL COMMENT '²åÈëÊ±¼ä',
-  `updated_time` datetime DEFAULT NULL COMMENT '¸üĞÂÊ±¼ä',
-  `memo` varchar(50) DEFAULT '' COMMENT '±¸×¢×Ö¶Î',
-  `insert_user` varchar(50) DEFAULT '' COMMENT '²åÈëÓÃ»§',
-  `update_user` varchar(50) DEFAULT '' COMMENT '¸üĞÂÓÃ»§',
-  `version` int(11) unsigned DEFAULT '0' COMMENT '°æ±¾',
+  `user_id` int(11) unsigned DEFAULT '0' COMMENT 'ç™»å½•è´¦æˆ·ID',
+  `partner_user_id` varchar(36) DEFAULT '' COMMENT 'ç¬¬ä¸‰æ–¹çš„ç”¨æˆ·ID',
+  `parent_user_id` int(11) DEFAULT '0' COMMENT 'æ¨èç”¨æˆ·ID',
+  `user_role` tinyint(4) DEFAULT '0' COMMENT 'ç”¨æˆ·å½“å‰è§’è‰² 1ï¼šæ±‚èŒè€… 2ï¼šåº”è˜è€…  3ï¼šåˆä¼™äºº',
+  `user_status` tinyint(4) DEFAULT '0' COMMENT 'å½“å‰ç”¨æˆ·çŠ¶æ€: 0ï¼š æ­£å¸¸ 1ï¼šå¯†ç é”™è¯¯é”å®š,2ï¼šè´¦æˆ·äººå·¥å†»ç»“ï¼ˆèµ„é‡‘ä¸å¯è¿›å‡ºï¼‰,3 :è´¦æˆ·æ­¢ä»˜ï¼ˆè´¦æˆ·ä¸å…è®¸æ¶ˆè´¹ï¼‰, 4ï¼šè´¦æˆ·æ­¢ å…¥ï¼ˆè´¦æˆ·ä¸å…å……å€¼ï¼‰',
+  `avatar_url` varchar(100) DEFAULT '' COMMENT 'ç”¨æˆ·å¤´åƒURL',
+  `login_mode` tinyint(4) DEFAULT '0' COMMENT 'ç™»å½•æ–¹å¼ï¼š1ï¼šå¾®ä¿¡ï¼Œ2ï¼šæ‰‹æœºæ³¨å†Œï¼Œ3ï¼šå¾®åš',
+  `login_name` varchar(50) DEFAULT '' COMMENT 'ç™»å½•è´¦å·',
+  `login_password` varchar(50) DEFAULT '' COMMENT 'å¯†ç ',
+  `error_count` tinyint(4) DEFAULT '0' COMMENT 'å¯†ç é”™è¯¯æ¬¡æ•°',
+  `last_login_time` datetime DEFAULT NULL COMMENT 'ä¸Šæ¬¡ç™»å½•æ—¶é—´',
+  `last_device_id` varchar(30) DEFAULT '' COMMENT 'ä¸Šæ¬¡ç™»å½•è®¾å¤‡ID',
+  `account_bal` decimal(15,2) DEFAULT '0.00' COMMENT 'è´¦æˆ·ä½™é¢-èµ„é‡‘',
+  `goods_count` decimal(15,2) DEFAULT '0.00' COMMENT 'å•†å“æ•°é‡-è™šæ‹Ÿ',
+  `device_ip` varchar(30) DEFAULT '' COMMENT ' é¦–æ¬¡è®¾å¤‡ip',
+  `device_type` tinyint(4) DEFAULT '0' COMMENT 'é¦–æ¬¡è®¾å¤‡ç±»å‹ï¼š1ï¼šANDROID, 2ï¼šOS, 3ï¼šPC',
+  `device_os` varchar(30) DEFAULT '' COMMENT 'é¦–æ¬¡è®¾å¤‡æ“ä½œç³»ç»Ÿ',
+  `device_os_ver` varchar(30) DEFAULT '' COMMENT 'é¦–æ¬¡è®¾å¤‡æ“ä½œç³»ç»Ÿç‰ˆæœ¬',
+  `device_id` varchar(30) DEFAULT '' COMMENT 'é¦–æ¬¡è®¾å¤‡id',
+  `latitude` varchar(20) DEFAULT '' COMMENT 'é¦–æ¬¡çº¬åº¦',
+  `longitude` varchar(20) DEFAULT '' COMMENT 'é¦–æ¬¡ç»åº¦',
+  `market` varchar(30) DEFAULT '' COMMENT 'åº”ç”¨å¸‚åœº',
+  `user_channel` varchar(20) DEFAULT '' COMMENT 'è·å®¢æ¸ é“',
+  `random_no` int(11) DEFAULT '0' COMMENT 'ç”¨æˆ·éšæœºæ•°',
+  `region_no` varchar(15) DEFAULT '' COMMENT 'ç”¨æˆ·è´Ÿè´£çš„åŒºåŸŸç¼–å·',
+  `customer_id` int(11) unsigned DEFAULT '0' COMMENT 'å®¢æˆ·ID',
+  `created_time` datetime DEFAULT NULL COMMENT 'æ’å…¥æ—¶é—´',
+  `updated_time` datetime DEFAULT NULL COMMENT 'æ›´æ–°æ—¶é—´',
+  `memo` varchar(50) DEFAULT '' COMMENT 'å¤‡æ³¨å­—æ®µ',
+  `insert_user` varchar(50) DEFAULT '' COMMENT 'æ’å…¥ç”¨æˆ·',
+  `update_user` varchar(50) DEFAULT '' COMMENT 'æ›´æ–°ç”¨æˆ·',
+  `version` int(11) unsigned DEFAULT '0' COMMENT 'ç‰ˆæœ¬',
   PRIMARY KEY (`id`),
   KEY `idx_user_id` (`user_id`),
   KEY `idx_partner_user_id` (`partner_user_id`),
   KEY `idx_user_status` (`user_status`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='ÕË»§ĞÅÏ¢±í';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='è´¦æˆ·ä¿¡æ¯è¡¨';
 
+-- Create syntax for TABLE 'tba_base_codes'
+CREATE TABLE `tba_base_codes` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `code_type` varchar(20) NOT NULL COMMENT 'ä»£ç ç±»å‹',
+  `code_no` varchar(20) NOT NULL DEFAULT '' COMMENT 'ä»£ç ä»£å·',
+  `parent_code_no` varchar(20) DEFAULT '' COMMENT 'çˆ¶ä»£ç ä»£å·',
+  `code_val` varchar(100) NOT NULL DEFAULT '' COMMENT 'ä»£ç å€¼',
+  `flag` smallint(6) NOT NULL DEFAULT '0' COMMENT 'å¯ç”¨æ ‡å¿— 0-ç³»ç»Ÿ 1-å·²å¯ç”¨ -1ç¦ç”¨',
+  `insert_time` datetime DEFAULT NULL COMMENT 'æ’å…¥æ—¶é—´',
+  `update_time` datetime DEFAULT NULL COMMENT 'æ›´æ–°æ—¶é—´',
+  `version` int(11) unsigned DEFAULT '0' COMMENT 'ç‰ˆæœ¬',
+  PRIMARY KEY (`id`),
+  KEY `idx_user_id` (`code_type`)
+) ENGINE=InnoDB AUTO_INCREMENT=226 DEFAULT CHARSET=utf8 COMMENT='ç”³è¯·å­—å…¸ä»£ç è¡¨';
 
-#ÇóÖ°ÕßĞÅÏ¢±í
+-- Create syntax for TABLE 'tba_customers'
 CREATE TABLE `tba_customers` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `customer_id` int(11) unsigned DEFAULT '0' COMMENT 'ÇóÖ°ÕßID',
-  `customer_type`  tinyint(4) DEFAULT '0' COMMENT 'ÓÃ»§ÀàĞÍ£º1£ºÇóÖ°Õß 2£ºÓ¦Æ¸Õß  3£ººÏ»ïÈË',
-  `customer_no` varchar(21) DEFAULT '0' COMMENT 'Ö¤¼şºÅÂë',
-  `customer_name` varchar(200) DEFAULT '0' COMMENT 'ÓÃ»§ÕæÊµĞÕÃû',
-  `sex`  tinyint(4)  DEFAULT '0' COMMENT '1:ÄĞ£¬2£ºÅ®',
-  `mail` varchar(20) DEFAULT '' COMMENT 'ÓÊÏä',
-  `url` varchar(50) DEFAULT '' COMMENT '¸öÈË»òÆóÒµÖ÷Ò³',
-  `customer_desc` varchar(500) DEFAULT '' COMMENT '¸öÈË»ò½éÉÜ',
-  `update_time` datetime DEFAULT NULL COMMENT '¸üĞÂÊ±¼ä',
-  `version`  int(11)  unsigned DEFAULT '0' COMMENT '°æ±¾',
+  `customer_id` int(11) unsigned DEFAULT '0' COMMENT 'æ±‚èŒè€…ID',
+  `customer_type` tinyint(4) DEFAULT '0' COMMENT 'ç”¨æˆ·ç±»å‹ï¼š1ï¼šæ±‚èŒè€… 2ï¼šåº”è˜è€…  3ï¼šåˆä¼™äºº',
+  `customer_no` varchar(21) DEFAULT '0' COMMENT 'è¯ä»¶å·ç ',
+  `customer_name` varchar(200) DEFAULT '0' COMMENT 'ç”¨æˆ·çœŸå®å§“å',
+  `sex` tinyint(4) DEFAULT '0' COMMENT '1:ç”·ï¼Œ2ï¼šå¥³',
+  `mail` varchar(20) DEFAULT '' COMMENT 'é‚®ç®±',
+  `url` varchar(50) DEFAULT '' COMMENT 'ä¸ªäººæˆ–ä¼ä¸šä¸»é¡µ',
+  `customer_desc` varchar(500) DEFAULT '' COMMENT 'ä¸ªäººæˆ–ä»‹ç»',
+  `update_time` datetime DEFAULT NULL COMMENT 'æ›´æ–°æ—¶é—´',
+  `version` int(11) unsigned DEFAULT '0' COMMENT 'ç‰ˆæœ¬',
   PRIMARY KEY (`id`),
   KEY `idx_user_id` (`customer_id`)
-  
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='ÇóÖ°ÕßĞÅÏ¢±í';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='æ±‚èŒè€…ä¿¡æ¯è¡¨';
 
-
-#ÇóÖ°Õß£¨¸öÈË£©Í¶ËÍ¼òÀú¼ÇÂ¼±í
-drop table tba_account_post_resumes;
-CREATE TABLE `tba_account_post_resumes` (
-  `id`   bigint(20) NOT NULL AUTO_INCREMENT,
-  `post_no`    bigint(20)  DEFAULT '0' COMMENT 'Í¶ËÍ¼ÇÂ¼±àºÅ',
-  `user_id`   int(11)  unsigned  DEFAULT '0' 	COMMENT 'Í¶ËÍ¼òÀúµÄÓÃ»§ID',
-  `user_name` varchar(50)  DEFAULT '' COMMENT 'ÇóÖ°ÕßĞÕÃû',
-  `user_sex`   tinyint(4) DEFAULT '0'  COMMENT 'ÇóÖ°ÕßĞÔ±ğ:1 ÄĞ 2£ºÅ®',
-  `user_phone` varchar(21)  DEFAULT '' COMMENT 'ÊÖ»úºÅÂë',
-  `work_years`  varchar(10)  DEFAULT '' COMMENT '¹¤×÷ÄêÏŞ',
-  `edu_level`  varchar(10)  DEFAULT '' COMMENT '×î¸ßÑ§Àú',
-  `want_position_no` varchar(10)  DEFAULT '' COMMENT 'ÇóÖ°ÆÚÍûµÄÖ°Î»',
-  `want_salary` varchar(10)   DEFAULT ''  COMMENT 'ÇóÖ°ÆÚÍûµÄĞ½×Ê',
-  `want_area`  varchar(10)  DEFAULT ''  COMMENT 'ÇóÖ°ÆÚÍûµÄÇøÓò',
-  `insert_time` datetime DEFAULT NULL COMMENT '²åÈëÊ±¼ä',
-  `update_time` datetime DEFAULT NULL COMMENT '¸üĞÂÊ±¼ä',
-  `version` int(11)  unsigned DEFAULT '0' COMMENT '°æ±¾',
-  PRIMARY KEY (`id`),
-  KEY `idx_user_id` (`user_id`),
-  KEY `idx_post_no` (`post_no`)
-  ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='ÇóÖ°Õß£¨¸öÈË£©Í¶ËÍ¼òÀú¼ÇÂ¼±í';
-
-#ÇóÖ°Õß½ÌÓıÇé¿ö
-CREATE TABLE `tba_account_educations` (
+-- Create syntax for TABLE 'tba_products'
+CREATE TABLE `tba_products` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `user_id`   int(11)  unsigned DEFAULT '0' COMMENT 'ÓÃ»§ID',
-  `post_no`    bigint(20)  DEFAULT '0' COMMENT 'Í¶ËÍ¼ÇÂ¼±àºÅ',
-  `school_name` varchar(50) DEFAULT '' COMMENT 'Ñ§Ğ£Ãû³Æ',
-  `school_level`   tinyint(4)   DEFAULT '0' COMMENT '±ÏÒµ¼¶±ğ£º 1£º²©Ê¿¡¢2£ºÑĞ¾¿Éú¡¢3£º±¾¿Æ¡¢4£º´ó×¨¡¢5£ºÖĞ×¨¡¢6£º¸ßÖĞ¡¢7£ºĞ¡Ñ§¡¢9£ºÆäËû',
-  `school_major` varchar(10) DEFAULT '' COMMENT 'ËùÑ§×¨Òµ£º×¨Òµ´úÂë±í',
-  `school_end` date DEFAULT NULL COMMENT '±ÏÒµÊ±¼ä',
-  `insert_time` datetime DEFAULT NULL COMMENT '²åÈëÊ±¼ä',
-  `update_time` datetime DEFAULT NULL COMMENT '¸üĞÂÊ±¼ä',
-  `version` int(11)  unsigned DEFAULT '0' COMMENT '°æ±¾',
+  `goods_no` varchar(10) DEFAULT '' COMMENT 'äº§å“ç¼–å·',
+  `goods_ver` varchar(10) DEFAULT '' COMMENT 'äº§å“ç‰ˆæœ¬',
+  `goods_name` varchar(10) DEFAULT '' COMMENT 'äº§å“åç§°',
+  `goods_price` varchar(10) DEFAULT '' COMMENT 'äº§å“ä»·æ ¼',
+  `goods_days` varchar(10) DEFAULT '' COMMENT 'äº§å“æœŸé™',
+  `goods_desc` varchar(100) DEFAULT '' COMMENT 'äº§å“æè¿°',
+  `insert_time` datetime DEFAULT NULL COMMENT 'æ’å…¥æ—¶é—´',
+  `update_time` datetime DEFAULT NULL COMMENT 'æ›´æ–°æ—¶é—´',
+  `insert_user` varchar(50) DEFAULT '' COMMENT 'æ’å…¥æ—¶é—´',
+  `update_user` varchar(50) DEFAULT '' COMMENT 'æ›´æ–°æ—¶é—´',
+  `version` int(11) unsigned DEFAULT '0' COMMENT 'ç‰ˆæœ¬',
   PRIMARY KEY (`id`),
-  KEY `idx_user_id` (`user_id`),
-  KEY `idx_post_no` (`post_no`),
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='ÇóÖ°Õß½ÌÓıÇé¿ö'
+  KEY `idx_user_id` (`goods_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='äº§å“å®šä»·è¡¨';
 
-#ÇóÖ°ÕßÏîÄ¿¾­Ñé±í
-CREATE TABLE `tba_account_projects` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11)  unsigned DEFAULT '0' COMMENT 'ÓÃ»§ID',
-  `post_no`    bigint(20)  DEFAULT '0' COMMENT 'Í¶ËÍ¼ÇÂ¼±àºÅ',
-  `project_name` varchar(100) DEFAULT '' COMMENT 'ÏîÄ¿Ãû³Æ',
-  `project_begin` date DEFAULT NULL COMMENT '²Î¼ÓÏîÄ¿¿ªÊ¼ÈÕÆÚ',
-  `project_end` date DEFAULT NULL COMMENT '²Î¼ÓÏîÄ¿½áÊøÈÕÆÚ',
-  `project_desc` varchar(500) DEFAULT '' COMMENT '×Ô¼º¹¤×÷ÃèÊö',
-  `project_url1` varchar(200) DEFAULT '' COMMENT 'ÏîÄ¿ÓïÒô»òÍ¼Æ¬½éÉÜ',
-  `project_url2` varchar(200) DEFAULT '' COMMENT 'ÏîÄ¿³É¹ûURL',
-  `project_url3` varchar(200) DEFAULT '' COMMENT 'ÏîÄ¿³É¹ûURL',
-   `insert_time` datetime DEFAULT NULL COMMENT '²åÈëÊ±¼ä',
-  `update_time` datetime DEFAULT NULL COMMENT '¸üĞÂÊ±¼ä',
-  `version` int(11)  unsigned DEFAULT '0' COMMENT '°æ±¾',
+-- Create syntax for TABLE 'tba_trxn_type_sets'
+CREATE TABLE `tba_trxn_type_sets` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `trxn_no` varchar(10) DEFAULT '' COMMENT 'äº¤æ˜“ç±»å‹ç¼–å·',
+  `trxn_name` varchar(100) DEFAULT '' COMMENT 'äº¤æ˜“ç±»å‹åç§°',
+  `trxn_status` tinyint(4) DEFAULT '0' COMMENT 'äº¤æ˜“ç±»å‹çŠ¶æ€',
+  `insert_time` datetime DEFAULT NULL COMMENT 'æ’å…¥æ—¶é—´',
+  `update_time` datetime DEFAULT NULL COMMENT 'æ›´æ–°æ—¶é—´',
+  `version` int(11) unsigned DEFAULT '0' COMMENT 'ç‰ˆæœ¬',
   PRIMARY KEY (`id`),
-  KEY `idx_user_id` (`user_id`),
-  KEY `idx_post_no` (`post_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='ÇóÖ°ÕßÏîÄ¿¾­Ñé±í';
+  KEY `idx_user_id` (`trxn_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='äº¤æ˜“ç±»å‹è¡¨';
 
 
-#ÇóÖ°ÕßÆäËû¸½¼ş²ÄÁÏ
-CREATE TABLE `tba_account_others` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11)  unsigned DEFAULT '0' COMMENT 'ÓÃ»§ID',
-  `post_no`    bigint(20)  DEFAULT '0' COMMENT 'Í¶ËÍ¼ÇÂ¼±àºÅ',
-  `other_desc` varchar(500) DEFAULT '' COMMENT '×Ô¼º¹¤×÷ÃèÊö',
-  `other_url1` varchar(200) DEFAULT '' COMMENT '¸öÈËÆäËû¸½¼ş£¬Í¼Æ¬1',
-  `other_url2` varchar(200) DEFAULT '' COMMENT '¸öÈËÆäËû¸½¼ş£¬Í¼Æ¬2',
-  `other_url3` varchar(200) DEFAULT '' COMMENT '¸öÈËÆäËû¸½¼ş£¬Í¼Æ¬3',
-  `insert_time` datetime DEFAULT NULL COMMENT '²åÈëÊ±¼ä',
-  `update_time` datetime DEFAULT NULL COMMENT '¸üĞÂÊ±¼ä',
-  `version` int(11)  unsigned DEFAULT '0' COMMENT '°æ±¾',
-  PRIMARY KEY (`id`),
-  KEY `idx_user_id` (`user_id`),
-  KEY `idx_post_no` (`post_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='ÇóÖ°ÕßÆäËû¸½¼ş²ÄÁÏ';
 
 
-#ÕĞÆ¸Õß·¢²¼Ö°Î»¼ÇÂ¼
-CREATE TABLE `tba_account_post_positions` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `publish_no`  bigint(20)  DEFAULT '0' COMMENT 'Ö°Î»·¢²¼±àºÅ',
-  `user_id`  	int(11)  DEFAULT '0' COMMENT 'ÓÃ»§ID',
-  `position_name` varchar(50) DEFAULT '' COMMENT 'Ö°Î»Ãû³Æ',
-  `position_desc` varchar(1000)  DEFAULT '' COMMENT 'Ö°Î»ÈÎÖ°ÒªÇó',
-  `publish_time` datetime DEFAULT null  COMMENT 'Ö°Î»·¢²¼Ê±¼ä',
-  `expire_time` date  DEFAULT NULL COMMENT 'Ö°Î»µ½ÆÚÈÕ',
-  `salary_min`  decimal(15,2) DEFAULT '0' COMMENT '×îĞ¡Ğ½Ë®',
-  `salary_max`  decimal(15,2) DEFAULT '0' COMMENT '×î´óĞ½Ë®',
-  `city` varchar(50) DEFAULT '' COMMENT 	'Ö°Î»ÒªÇó³ÇÊĞ',
-  `school_level` varchar(10) DEFAULT '' COMMENT 'ÒªÇóÑ§Àú',
-  `exp_min` varchar(10)  DEFAULT NULL COMMENT 'ÒªÇó×îĞ¡¹¤×÷ÄêÏŞ',
-  `exp_max` varchar(10)   DEFAULT '' COMMENT 'ÒªÇó×î´ó¹¤×÷ÄêÏŞ',
-  `insert_time` datetime DEFAULT  NULL COMMENT '²åÈëÊ±¼ä',
-  `update_time` datetime DEFAULT NULL COMMENT '¸üĞÂÊ±¼ä',
-  `version` int(11)  unsigned DEFAULT '0' COMMENT '°æ±¾',
-  PRIMARY KEY (`id`),
-  KEY `idx_publish_no` (`publish_no`),
-  KEY `idx_user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='ÕĞÆ¸Õß·¢²¼Ö°Î»¼ÇÂ¼';
+#########################
+1ã€æ‚£è€…è¿™ä¸€å±‚ï¼›
+2ã€
 
-#ºÏ»ïÕßÍÆ¼öÀúÊ·¼ÇÂ¼±í
-CREATE TABLE `tba_account_recommends` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11)  unsigned   DEFAULT '0' COMMENT 'ÍÆËÍÂëµÄ·¢ÆğÕß',
-  `recommend_no`  bigint(20)  DEFAULT '0' COMMENT 'Ö°Î»·¢²¼±àºÅ',
-  `recommend_time` datetime DEFAULT NULL COMMENT 'ÍÆ¹ãÊ±¼ä',
-  `recommend_type` tinyint(4) DEFAULT '0' COMMENT '1:×¢²áÍÆ¼ö£¬2£ºÍÆËÍ¸ÚÎ»ÖÁÇóÖ°Õß£¬3£ºÍÆËÍÇóÖ°ÕßÖÁÕĞÆ¸Õß',
-  `insert_time` datetime DEFAULT NULL COMMENT '²åÈëÊ±¼ä',
-  `update_time` datetime DEFAULT NULL COMMENT '¸üĞÂÊ±¼ä',
-  `version` int(11)  unsigned DEFAULT '0' COMMENT '°æ±¾',
-   PRIMARY KEY (`id`),
-  KEY `idx_user_id` (`user_id`)
-  ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='ºÏ»ïÕßÍÆËÍÀúÊ·±í';
+
+
+
