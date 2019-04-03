@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"tbactl/service/account"
+	"tbactl/service/dbcomm"
+	"tbactl/service/login"
 	"time"
 )
 
@@ -37,12 +40,12 @@ func wxGetOpenid(code string) (error, string, string) {
 		return fmt.Errorf("访问微信认证服务出错！"), "", ""
 	}
 	defer res.Body.Close()
-
 	var resp LoginResp
 	err = json.NewDecoder(res.Body).Decode(&resp)
 	if err != nil {
 		return fmt.Errorf("解析JSON出错"), "", ""
 	}
+	log.Printf("%#v", resp)
 	return nil, resp.Openid, resp.Session_key
 }
 
@@ -50,7 +53,7 @@ func wxGetOpenid(code string) (error, string, string) {
 	微信登录
 */
 func WxLogin(w http.ResponseWriter, req *http.Request) {
-	log.Println("WxLogin===============>")
+	log.Println("========》WxLogin")
 	keys, ok := req.URL.Query()["code"]
 	if !ok || len(keys) < 1 {
 		log.Println("Url Param 'key' is missing")
@@ -62,6 +65,31 @@ func WxLogin(w http.ResponseWriter, req *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	log.Println("=====>", openId)
+	regUser(openId, sessionKey)
 	w.Write([]byte(sessionKey))
+	log.Println("《========WxLogin")
+}
+
+/*
+	登记用户注册信息
+*/
+func regUser(openId string, sessionKey string) error {
+	var search account.Search
+	search.PartnerUserId = openId
+	r := account.New(dbcomm.GetDB(), account.DEBUG)
+	if e, err := r.Get(search); err != nil {
+		var a account.Account
+		a.PartnerUserId = openId
+		a.UserId = time.Now().Unix()
+		r.InsertEntity(a, nil)
+	} else {
+		r := login.New(dbcomm.GetDB(), login.DEBUG)
+		var l login.Login
+		l.UserId = e.UserId
+		l.LoginTime = time.Now().Format("2006-01-02 15:04:05")
+		l.LoginDesc = "wechat login successful!"
+		l.LoginNo = time.Now().Unix()
+		r.InsertEntity(l, nil)
+	}
+	return nil
 }

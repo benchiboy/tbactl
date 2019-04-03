@@ -42,6 +42,7 @@ func go_WebServer() {
 	http.HandleFunc("/getPosition", position.GetPosition)
 
 	http.HandleFunc("/addAccount", account.AddAccount)
+	http.HandleFunc("/updateAccount", account.UpdateAccount)
 
 	http_srv = &http.Server{
 		Addr: ":8000",

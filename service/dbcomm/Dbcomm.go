@@ -11,7 +11,7 @@ var (
 
 func InitDB() {
 	var err error
-	db, err = sql.Open("mysql", "root:123456@tcp(127.0.0.1:3306)/tba2_db")
+	db, err = sql.Open("mysql", "root:123456@tcp(10.193.1.155:3306)/tba2_db")
 	if err != nil {
 		log.Println("Open database error:", err)
 		return
