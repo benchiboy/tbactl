@@ -3,8 +3,29 @@ package common
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 )
+
+const (
+	USER_CHARGE = "用户充值"
+	FLOW_CHARGE = "charge"
+	FLOW_INIT   = "i"
+	FLOW_SUCC   = "s"
+	FLOW_FAIL   = "f"
+
+	NOW_TIME_FORMAT    = "2006-01-02 15:04:05"
+	FIELD_ACCOUNT_BAL  = "Account_bal"
+	FIELD_UPDATED_TIME = "Updated_time"
+)
+
+func PrintHead(a ...interface{}) {
+	log.Println("========》", a)
+}
+
+func PrintTail(a ...interface{}) {
+	log.Println("《========", a)
+}
 
 func Write_Response(response interface{}, w http.ResponseWriter, r *http.Request) {
 	json, err := json.Marshal(response)

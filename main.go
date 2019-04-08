@@ -11,6 +11,7 @@ import (
 	"os"
 	"tbactl/control/account"
 	"tbactl/control/basecode"
+	"tbactl/control/flow"
 	"tbactl/control/login"
 	"tbactl/control/position"
 	"tbactl/control/resume"
@@ -41,13 +42,16 @@ func go_WebServer() {
 	http.HandleFunc("/edtPosition", position.EdtPosition)
 	http.HandleFunc("/getPosition", position.GetPosition)
 
+	http.HandleFunc("/getFlowList", flows.GetFlowsList)
+	http.HandleFunc("/addFlow", flows.AddFlow)
+
 	http.HandleFunc("/addAccount", account.AddAccount)
 	http.HandleFunc("/updateAccount", account.UpdateAccount)
 
 	http_srv = &http.Server{
 		Addr: ":8000",
 	}
-
+	log.Printf("listen:")
 	if err := http_srv.ListenAndServe(); err != nil {
 		log.Printf("listen: %s\n", err)
 	}
