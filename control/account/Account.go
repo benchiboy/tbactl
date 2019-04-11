@@ -12,7 +12,6 @@ import (
 	"tbactl/control/common"
 	"tbactl/service/account"
 	"tbactl/service/dbcomm"
-	"time"
 )
 
 type EncryptedDataUserInfo struct {
@@ -32,23 +31,25 @@ type EncryptedDataUserInfo struct {
 }
 
 /*
-	说明：添加账号信息
+	说明：得到账户信息
 	出参：参数1：返回符合条件的对象列表
 */
 
-func AddAccount(w http.ResponseWriter, req *http.Request) {
-	log.Println("<========AddAccount========>")
-	var form account.Account
+func GetAccount(w http.ResponseWriter, req *http.Request) {
+	common.PrintHead("GetAccount")
+	var form account.Form
 	err := json.NewDecoder(req.Body).Decode(&form)
 	if err != nil {
 		log.Println(err.Error())
 		return
 	}
 	defer req.Body.Close()
+	var search account.Search
+	search.UserId = form.Form.UserId
 	r := account.New(dbcomm.GetDB(), account.DEBUG)
-	form.UserId = time.Now().UnixNano()
-	r.InsertEntity(form, nil)
-	common.Write_Response("OK", w, req)
+	e, _ := r.Get(search)
+	common.PrintHead("GetAccount")
+	common.Write_Response(e, w, req)
 }
 
 /*
@@ -57,7 +58,7 @@ func AddAccount(w http.ResponseWriter, req *http.Request) {
 */
 
 func UpdateAccount(w http.ResponseWriter, req *http.Request) {
-	log.Println("========》UpdateAccount")
+	common.PrintHead("UpdateAccount")
 	var form account.Form
 	err := json.NewDecoder(req.Body).Decode(&form)
 	if err != nil {
@@ -82,7 +83,7 @@ func UpdateAccount(w http.ResponseWriter, req *http.Request) {
 		r.InsertEntity(form.Form, nil)
 	}
 	common.Write_Response("OK", w, req)
-	log.Println("《========UpdateAccount")
+	common.PrintTail("UpdateAccount")
 }
 
 /*
@@ -91,7 +92,7 @@ func UpdateAccount(w http.ResponseWriter, req *http.Request) {
 */
 
 func getWechatUserInfo(inEncryptedData string, inIv string, inSessionKey string) *EncryptedDataUserInfo {
-	log.Println("========》getWechatUserInfo")
+	common.PrintHead("getWechatUserInfo")
 	encryptedData, _ := base64.StdEncoding.DecodeString(inEncryptedData)
 	iv, _ := base64.StdEncoding.DecodeString(inIv)
 	sessionKey, _ := base64.StdEncoding.DecodeString(inSessionKey)
@@ -114,7 +115,7 @@ func getWechatUserInfo(inEncryptedData string, inIv string, inSessionKey string)
 		return nil
 	}
 	log.Println(userInfo.OpenID)
-	log.Println("《========getWechatUserInfo")
+	common.PrintTail("getWechatUserInfo")
 	return &userInfo
 
 }

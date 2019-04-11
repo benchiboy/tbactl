@@ -45,7 +45,7 @@ func go_WebServer() {
 	http.HandleFunc("/getFlowList", flows.GetFlowsList)
 	http.HandleFunc("/addFlow", flows.AddFlow)
 
-	http.HandleFunc("/addAccount", account.AddAccount)
+	http.HandleFunc("/getAccount", account.GetAccount)
 	http.HandleFunc("/updateAccount", account.UpdateAccount)
 
 	http_srv = &http.Server{

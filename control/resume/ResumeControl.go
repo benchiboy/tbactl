@@ -51,7 +51,7 @@ func AddResume(w http.ResponseWriter, req *http.Request) {
 	log.Println("form====>", form)
 	r := resume.New(dbcomm.GetDB(), resume.DEBUG)
 	form.Form.PostNo = time.Now().UnixNano()
-	r.InsertEntity(form.Form)
+	r.InsertEntity(form.Form, nil)
 	common.Write_Response("OK", w, req)
 }
 

@@ -17,6 +17,9 @@ const (
 	NOW_TIME_FORMAT    = "2006-01-02 15:04:05"
 	FIELD_ACCOUNT_BAL  = "Account_bal"
 	FIELD_UPDATED_TIME = "Updated_time"
+
+	RESP_SUCC = "0000"
+	RESP_FAIL = "1000"
 )
 
 func PrintHead(a ...interface{}) {

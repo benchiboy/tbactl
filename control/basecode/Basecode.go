@@ -11,13 +11,13 @@ import (
 )
 
 /*
-	说明：得到我的协议列表
+	说明：得到基础代码字典
 	入参：s: 查询条件
 	出参：参数1：返回符合条件的对象列表
 */
 
 func GetBasecodeList(w http.ResponseWriter, req *http.Request) {
-	log.Println("GetBasecodeList===============>")
+	common.PrintHead("GetBasecodeList")
 	var search basecode.Search
 	err := json.NewDecoder(req.Body).Decode(&search)
 	if err != nil {
@@ -30,5 +30,6 @@ func GetBasecodeList(w http.ResponseWriter, req *http.Request) {
 	list, err := r.GetList(search)
 	tl, err := r.GetTotal(search)
 	r.Total = tl
+	common.PrintTail("GetBasecodeList")
 	common.Write_Response(list, w, req)
 }

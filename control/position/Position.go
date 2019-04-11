@@ -11,6 +11,13 @@ import (
 	"time"
 )
 
+type PositionResp struct {
+	ErrCode   string                  `json:"err_code"`
+	ErrMsg    string                  `json:"err_msg"`
+	Total     int                     `json:"total"`
+	Positions []position.PostPosition `json:"positions"`
+}
+
 /*
 	说明：得到职位列表
 	入参：s: 查询条件
@@ -18,7 +25,7 @@ import (
 */
 
 func GetPositionList(w http.ResponseWriter, req *http.Request) {
-	log.Println("GetPositionList===============>")
+	common.PrintHead("GetPositionList")
 	var search position.Search
 	err := json.NewDecoder(req.Body).Decode(&search)
 	if err != nil {
@@ -26,12 +33,15 @@ func GetPositionList(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 	defer req.Body.Close()
-	log.Println("Search====>", search)
 	r := position.New(dbcomm.GetDB(), position.DEBUG)
-	list, err := r.GetList(search)
+	var posiResp PositionResp
+	l, err := r.GetList(search)
 	tl, err := r.GetTotal(search)
-	r.Total = tl
-	common.Write_Response(list, w, req)
+	posiResp.Positions = l
+	posiResp.Total = tl
+	posiResp.ErrCode = common.RESP_SUCC
+	common.PrintTail("GetPositionList")
+	common.Write_Response(posiResp, w, req)
 }
 
 /*
@@ -41,7 +51,7 @@ func GetPositionList(w http.ResponseWriter, req *http.Request) {
 */
 
 func AddPosition(w http.ResponseWriter, req *http.Request) {
-	log.Println("========》AddPosition")
+	common.PrintHead("AddPosition")
 	var form position.Form
 	err := json.NewDecoder(req.Body).Decode(&form)
 	if err != nil {
@@ -49,15 +59,13 @@ func AddPosition(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 	defer req.Body.Close()
-	log.Println("form====>", form)
 	form.Form.PublishTime = time.Now().Format("2006-01-02 15:04:05")
 	form.Form.ExpireTime = time.Now().Add(time.Duration(30 * 24 * time.Hour)).Format("2006-01-02")
 	r := position.New(dbcomm.GetDB(), position.DEBUG)
 	form.Form.PublishNo = fmt.Sprintf("%d", time.Now().UnixNano())
 	form.Form.InsertTime = time.Now().Format("2006-01-02 15:04:05")
-	r.InsertEntity(form.Form)
-
-	log.Println("《========AddPosition")
+	r.InsertEntity(form.Form, nil)
+	common.PrintTail("AddPosition")
 	common.Write_Response("OK", w, req)
 }
 
@@ -91,7 +99,7 @@ func EdtPosition(w http.ResponseWriter, req *http.Request) {
 */
 
 func GetPosition(w http.ResponseWriter, req *http.Request) {
-	log.Println("GetPosition===============>")
+	common.PrintHead("GetPosition")
 	var search position.Search
 	err := json.NewDecoder(req.Body).Decode(&search)
 	if err != nil {
@@ -102,5 +110,6 @@ func GetPosition(w http.ResponseWriter, req *http.Request) {
 	log.Println("Search====>", search)
 	r := position.New(dbcomm.GetDB(), position.DEBUG)
 	l, err := r.Get(search)
+	common.PrintTail("GetPosition")
 	common.Write_Response(l, w, req)
 }
