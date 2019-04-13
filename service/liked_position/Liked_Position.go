@@ -184,7 +184,7 @@ func (r LikedPositionList) Get(s Search) (*LikedPosition, error) {
 		where += s.ExtraWhere
 	}
 
-	qrySql := fmt.Sprintf("Select id,user_id,publish_no,insert_time,update_time,version from tba_account_liked_postions where 1=1 %s ", where)
+	qrySql := fmt.Sprintf("Select id,user_id,publish_no,version from tba_account_liked_postions where 1=1 %s ", where)
 	if r.Level == DEBUG {
 		log.Println(SQL_SELECT, qrySql)
 	}
@@ -199,7 +199,7 @@ func (r LikedPositionList) Get(s Search) (*LikedPosition, error) {
 	if !rows.Next() {
 		return nil, fmt.Errorf("Not Finded Record")
 	} else {
-		err := rows.Scan(&p.Id, &p.UserId, &p.PublishNo, &p.InsertTime, &p.UpdateTime, &p.Version)
+		err := rows.Scan(&p.Id, &p.UserId, &p.PublishNo, &p.Version)
 		if err != nil {
 			log.Println(SQL_ERROR, err.Error())
 			return nil, err
@@ -394,6 +394,12 @@ func (r LikedPositionList) InsertEntity(p LikedPosition, tr *sql.Tx) error {
 		colNames += "publish_no,"
 		colTags += "?,"
 		valSlice = append(valSlice, p.PublishNo)
+	}
+
+	if p.InsertTime != "" {
+		colNames += "insert_time,"
+		colTags += "?,"
+		valSlice = append(valSlice, p.InsertTime)
 	}
 
 	if p.Version != 0 {

@@ -3,6 +3,7 @@ package position
 import (
 	"database/sql"
 	"fmt"
+	"hcd-gate/service/pubtype"
 	"log"
 	"strings"
 	"time"
@@ -26,6 +27,7 @@ type Search struct {
 	PublishNo     string  `json:"publish_no"`
 	UserId        int64   `json:"user_id"`
 	PositionName  string  `json:"position_name"`
+	PositionEmps  int64   `json:"position_emps"`
 	PositionDesc  string  `json:"position_desc"`
 	PositionClass string  `json:"position_class"`
 	PublishTime   string  `json:"publish_time"`
@@ -35,6 +37,7 @@ type Search struct {
 	SalaryMax     float64 `json:"salary_max"`
 	City          string  `json:"city"`
 	Area          string  `json:"area"`
+	SubArea       string  `json:"sub_area"`
 	SchoolLevel   string  `json:"school_level"`
 	WorkYears     string  `json:"work_years"`
 	WorkAddr      string  `json:"work_addr"`
@@ -53,7 +56,7 @@ type PostPositionList struct {
 	DB            *sql.DB
 	Level         int
 	Total         int            `json:"total"`
-	PostPositions []PostPosition `json:"PostPositions"`
+	PostPositions []PostPosition `json:"PostPosition"`
 }
 
 type PostPosition struct {
@@ -61,6 +64,7 @@ type PostPosition struct {
 	PublishNo     string  `json:"publish_no"`
 	UserId        int64   `json:"user_id"`
 	PositionName  string  `json:"position_name"`
+	PositionEmps  int64   `json:"position_emps"`
 	PositionDesc  string  `json:"position_desc"`
 	PositionClass string  `json:"position_class"`
 	PublishTime   string  `json:"publish_time"`
@@ -70,6 +74,7 @@ type PostPosition struct {
 	SalaryMax     float64 `json:"salary_max"`
 	City          string  `json:"city"`
 	Area          string  `json:"area"`
+	SubArea       string  `json:"sub_area"`
 	SchoolLevel   string  `json:"school_level"`
 	WorkYears     string  `json:"work_years"`
 	WorkAddr      string  `json:"work_addr"`
@@ -144,6 +149,10 @@ func (r *PostPositionList) GetTotal(s Search) (int, error) {
 		where += " and position_name='" + s.PositionName + "'"
 	}
 
+	if s.PositionEmps != 0 {
+		where += " and position_emps=" + fmt.Sprintf("%d", s.PositionEmps)
+	}
+
 	if s.PositionDesc != "" {
 		where += " and position_desc='" + s.PositionDesc + "'"
 	}
@@ -178,6 +187,10 @@ func (r *PostPositionList) GetTotal(s Search) (int, error) {
 
 	if s.Area != "" {
 		where += " and area='" + s.Area + "'"
+	}
+
+	if s.SubArea != "" {
+		where += " and sub_area='" + s.SubArea + "'"
 	}
 
 	if s.SchoolLevel != "" {
@@ -262,6 +275,10 @@ func (r PostPositionList) Get(s Search) (*PostPosition, error) {
 		where += " and position_name='" + s.PositionName + "'"
 	}
 
+	if s.PositionEmps != 0 {
+		where += " and position_emps=" + fmt.Sprintf("%d", s.PositionEmps)
+	}
+
 	if s.PositionDesc != "" {
 		where += " and position_desc='" + s.PositionDesc + "'"
 	}
@@ -296,6 +313,10 @@ func (r PostPositionList) Get(s Search) (*PostPosition, error) {
 
 	if s.Area != "" {
 		where += " and area='" + s.Area + "'"
+	}
+
+	if s.SubArea != "" {
+		where += " and sub_area='" + s.SubArea + "'"
 	}
 
 	if s.SchoolLevel != "" {
@@ -334,7 +355,7 @@ func (r PostPositionList) Get(s Search) (*PostPosition, error) {
 		where += s.ExtraWhere
 	}
 
-	qrySql := fmt.Sprintf("Select id,publish_no,user_id,position_name,position_desc,position_class,publish_time,expire_time,rewards,salary_min,salary_max,city,area,school_level,work_years,work_addr,contact_name,contact_phone,insert_time,update_time,version from tba_account_post_positions where 1=1 %s ", where)
+	qrySql := fmt.Sprintf("Select id,publish_no,user_id,position_name,position_emps,position_desc,position_class,publish_time,expire_time,rewards,salary_min,salary_max,city,area,sub_area,school_level,work_years,work_addr,contact_name,contact_phone,version from tba_account_post_positions where 1=1 %s ", where)
 	if r.Level == DEBUG {
 		log.Println(SQL_SELECT, qrySql)
 	}
@@ -349,7 +370,7 @@ func (r PostPositionList) Get(s Search) (*PostPosition, error) {
 	if !rows.Next() {
 		return nil, fmt.Errorf("Not Finded Record")
 	} else {
-		err := rows.Scan(&p.Id, &p.PublishNo, &p.UserId, &p.PositionName, &p.PositionDesc, &p.PositionClass, &p.PublishTime, &p.ExpireTime, &p.Rewards, &p.SalaryMin, &p.SalaryMax, &p.City, &p.Area, &p.SchoolLevel, &p.WorkYears, &p.WorkAddr, &p.ContactName, &p.ContactPhone, &p.InsertTime, &p.UpdateTime, &p.Version)
+		err := rows.Scan(&p.Id, &p.PublishNo, &p.UserId, &p.PositionName, &p.PositionEmps, &p.PositionDesc, &p.PositionClass, &p.PublishTime, &p.ExpireTime, &p.Rewards, &p.SalaryMin, &p.SalaryMax, &p.City, &p.Area, &p.SubArea, &p.SchoolLevel, &p.WorkYears, &p.WorkAddr, &p.ContactName, &p.ContactPhone, &p.Version)
 		if err != nil {
 			log.Println(SQL_ERROR, err.Error())
 			return nil, err
@@ -388,6 +409,10 @@ func (r *PostPositionList) GetList(s Search) ([]PostPosition, error) {
 		where += " and position_name='" + s.PositionName + "'"
 	}
 
+	if s.PositionEmps != 0 {
+		where += " and position_emps=" + fmt.Sprintf("%d", s.PositionEmps)
+	}
+
 	if s.PositionDesc != "" {
 		where += " and position_desc='" + s.PositionDesc + "'"
 	}
@@ -422,6 +447,10 @@ func (r *PostPositionList) GetList(s Search) ([]PostPosition, error) {
 
 	if s.Area != "" {
 		where += " and area='" + s.Area + "'"
+	}
+
+	if s.SubArea != "" {
+		where += " and sub_area='" + s.SubArea + "'"
 	}
 
 	if s.SchoolLevel != "" {
@@ -462,9 +491,9 @@ func (r *PostPositionList) GetList(s Search) ([]PostPosition, error) {
 
 	var qrySql string
 	if s.PageSize == 0 && s.PageNo == 0 {
-		qrySql = fmt.Sprintf("Select id,publish_no,user_id,position_name,position_desc,position_class,publish_time,expire_time,rewards,salary_min,salary_max,city,area,school_level,work_years,work_addr,contact_name,contact_phone,insert_time,update_time,version from tba_account_post_positions where 1=1 %s", where)
+		qrySql = fmt.Sprintf("Select id,publish_no,user_id,position_name,position_emps,position_desc,position_class,publish_time,expire_time,rewards,salary_min,salary_max,city,area,sub_area,school_level,work_years,work_addr,contact_name,contact_phone,insert_time,update_time,version from tba_account_post_positions where 1=1 %s", where)
 	} else {
-		qrySql = fmt.Sprintf("Select id,publish_no,user_id,position_name,position_desc,position_class,publish_time,expire_time,rewards,salary_min,salary_max,city,area,school_level,work_years,work_addr,contact_name,contact_phone,insert_time,update_time,version from tba_account_post_positions where 1=1 %s Limit %d offset %d", where, s.PageSize, (s.PageNo-1)*s.PageSize)
+		qrySql = fmt.Sprintf("Select id,publish_no,user_id,position_name,position_emps,position_desc,position_class,publish_time,expire_time,rewards,salary_min,salary_max,city,area,sub_area,school_level,work_years,work_addr,contact_name,contact_phone,insert_time,update_time,version from tba_account_post_positions where 1=1 %s Limit %d offset %d", where, s.PageSize, (s.PageNo-1)*s.PageSize)
 	}
 	if r.Level == DEBUG {
 		log.Println(SQL_SELECT, qrySql)
@@ -478,7 +507,7 @@ func (r *PostPositionList) GetList(s Search) ([]PostPosition, error) {
 
 	var p PostPosition
 	for rows.Next() {
-		rows.Scan(&p.Id, &p.PublishNo, &p.UserId, &p.PositionName, &p.PositionDesc, &p.PositionClass, &p.PublishTime, &p.ExpireTime, &p.Rewards, &p.SalaryMin, &p.SalaryMax, &p.City, &p.Area, &p.SchoolLevel, &p.WorkYears, &p.WorkAddr, &p.ContactName, &p.ContactPhone, &p.InsertTime, &p.UpdateTime, &p.Version)
+		rows.Scan(&p.Id, &p.PublishNo, &p.UserId, &p.PositionName, &p.PositionEmps, &p.PositionDesc, &p.PositionClass, &p.PublishTime, &p.ExpireTime, &p.Rewards, &p.SalaryMin, &p.SalaryMax, &p.City, &p.Area, &p.SubArea, &p.SchoolLevel, &p.WorkYears, &p.WorkAddr, &p.ContactName, &p.ContactPhone, &p.InsertTime, &p.UpdateTime, &p.Version)
 		r.PostPositions = append(r.PostPositions, p)
 	}
 	log.Println(SQL_ELAPSED, r)
@@ -494,13 +523,7 @@ func (r *PostPositionList) GetList(s Search) ([]PostPosition, error) {
 	出参：参数1：返回符合条件的对象列表, 参数2：如果错误返回错误对象
 */
 
-/*
-	说明：根据主键查询符合条件的记录，并保持成MAP
-	入参：s: 查询条件
-	出参：参数1：返回符合条件的对象, 参数2：如果错误返回错误对象
-*/
-
-func (r *PostPositionList) GetExt(s Search) (map[string]string, error) {
+func (r *PostPositionList) GetListExt(s Search, fList []string) ([][]pubtype.Data, error) {
 	var where string
 	l := time.Now()
 
@@ -518,6 +541,10 @@ func (r *PostPositionList) GetExt(s Search) (map[string]string, error) {
 
 	if s.PositionName != "" {
 		where += " and position_name='" + s.PositionName + "'"
+	}
+
+	if s.PositionEmps != 0 {
+		where += " and position_emps=" + fmt.Sprintf("%d", s.PositionEmps)
 	}
 
 	if s.PositionDesc != "" {
@@ -556,6 +583,10 @@ func (r *PostPositionList) GetExt(s Search) (map[string]string, error) {
 		where += " and area='" + s.Area + "'"
 	}
 
+	if s.SubArea != "" {
+		where += " and sub_area='" + s.SubArea + "'"
+	}
+
 	if s.SchoolLevel != "" {
 		where += " and school_level='" + s.SchoolLevel + "'"
 	}
@@ -588,7 +619,169 @@ func (r *PostPositionList) GetExt(s Search) (map[string]string, error) {
 		where += " and version=" + fmt.Sprintf("%d", s.Version)
 	}
 
-	qrySql := fmt.Sprintf("Select id,publish_no,user_id,position_name,position_desc,position_class,publish_time,expire_time,rewards,salary_min,salary_max,city,area,school_level,work_years,work_addr,contact_name,contact_phone,insert_time,update_time,version from tba_account_post_positions where 1=1 %s ", where)
+	if s.ExtraWhere != "" {
+		where += s.ExtraWhere
+	}
+
+	colNames := ""
+	for _, v := range fList {
+		colNames += v + ","
+
+	}
+	colNames = strings.TrimRight(colNames, ",")
+
+	var qrySql string
+	if s.PageSize == 0 && s.PageNo == 0 {
+		qrySql = fmt.Sprintf("Select %s from tba_account_post_positions where 1=1 %s", colNames, where)
+	} else {
+		qrySql = fmt.Sprintf("Select %s from tba_account_post_positions where 1=1 %s Limit %d offset %d", colNames, where, s.PageSize, (s.PageNo-1)*s.PageSize)
+	}
+	if r.Level == DEBUG {
+		log.Println(SQL_SELECT, qrySql)
+	}
+	rows, err := r.DB.Query(qrySql)
+	if err != nil {
+		log.Println(SQL_ERROR, err.Error())
+		return nil, err
+	}
+	defer rows.Close()
+
+	Columns, _ := rows.Columns()
+	values := make([]sql.RawBytes, len(Columns))
+	scanArgs := make([]interface{}, len(values))
+	for i := range values {
+		scanArgs[i] = &values[i]
+	}
+
+	rowData := make([][]pubtype.Data, 0)
+	for rows.Next() {
+		err = rows.Scan(scanArgs...)
+		colData := make([]pubtype.Data, 0)
+		for k, _ := range values {
+			d := new(pubtype.Data)
+			d.FieldName = Columns[k]
+			d.FieldValue = string(values[k])
+			colData = append(colData, *d)
+		}
+		//extra flow_batch_id
+		d2 := new(pubtype.Data)
+		d2.FieldName = "flow_batch_id"
+		d2.FieldValue = string(values[0])
+		colData = append(colData, *d2)
+
+		rowData = append(rowData, colData)
+	}
+
+	log.Println(SQL_ELAPSED, "==========>>>>>>>>>>>", rowData)
+	if r.Level == DEBUG {
+		log.Println(SQL_ELAPSED, time.Since(l))
+	}
+	return rowData, nil
+}
+
+/*
+	说明：根据主键查询符合条件的记录，并保持成MAP
+	入参：s: 查询条件
+	出参：参数1：返回符合条件的对象, 参数2：如果错误返回错误对象
+*/
+
+func (r *PostPositionList) GetExt(s Search) (map[string]string, error) {
+	var where string
+	l := time.Now()
+
+	if s.Id != 0 {
+		where += " and id=" + fmt.Sprintf("%d", s.Id)
+	}
+
+	if s.PublishNo != "" {
+		where += " and publish_no='" + s.PublishNo + "'"
+	}
+
+	if s.UserId != 0 {
+		where += " and user_id=" + fmt.Sprintf("%d", s.UserId)
+	}
+
+	if s.PositionName != "" {
+		where += " and position_name='" + s.PositionName + "'"
+	}
+
+	if s.PositionEmps != 0 {
+		where += " and position_emps=" + fmt.Sprintf("%d", s.PositionEmps)
+	}
+
+	if s.PositionDesc != "" {
+		where += " and position_desc='" + s.PositionDesc + "'"
+	}
+
+	if s.PositionClass != "" {
+		where += " and position_class='" + s.PositionClass + "'"
+	}
+
+	if s.PublishTime != "" {
+		where += " and publish_time='" + s.PublishTime + "'"
+	}
+
+	if s.ExpireTime != "" {
+		where += " and expire_time='" + s.ExpireTime + "'"
+	}
+
+	if s.Rewards != "" {
+		where += " and rewards='" + s.Rewards + "'"
+	}
+
+	if s.SalaryMin != 0 {
+		where += " and salary_min=" + fmt.Sprintf("%f", s.SalaryMin)
+	}
+
+	if s.SalaryMax != 0 {
+		where += " and salary_max=" + fmt.Sprintf("%f", s.SalaryMax)
+	}
+
+	if s.City != "" {
+		where += " and city='" + s.City + "'"
+	}
+
+	if s.Area != "" {
+		where += " and area='" + s.Area + "'"
+	}
+
+	if s.SubArea != "" {
+		where += " and sub_area='" + s.SubArea + "'"
+	}
+
+	if s.SchoolLevel != "" {
+		where += " and school_level='" + s.SchoolLevel + "'"
+	}
+
+	if s.WorkYears != "" {
+		where += " and work_years='" + s.WorkYears + "'"
+	}
+
+	if s.WorkAddr != "" {
+		where += " and work_addr='" + s.WorkAddr + "'"
+	}
+
+	if s.ContactName != "" {
+		where += " and contact_name='" + s.ContactName + "'"
+	}
+
+	if s.ContactPhone != "" {
+		where += " and contact_phone='" + s.ContactPhone + "'"
+	}
+
+	if s.InsertTime != "" {
+		where += " and insert_time='" + s.InsertTime + "'"
+	}
+
+	if s.UpdateTime != "" {
+		where += " and update_time='" + s.UpdateTime + "'"
+	}
+
+	if s.Version != 0 {
+		where += " and version=" + fmt.Sprintf("%d", s.Version)
+	}
+
+	qrySql := fmt.Sprintf("Select id,publish_no,user_id,position_name,position_emps,position_desc,position_class,publish_time,expire_time,rewards,salary_min,salary_max,city,area,sub_area,school_level,work_years,work_addr,contact_name,contact_phone,insert_time,update_time,version from tba_account_post_positions where 1=1 %s ", where)
 	if r.Level == DEBUG {
 		log.Println(SQL_SELECT, qrySql)
 	}
@@ -634,11 +827,11 @@ func (r *PostPositionList) GetExt(s Search) (map[string]string, error) {
 
 func (r PostPositionList) Insert(p PostPosition) error {
 	l := time.Now()
-	exeSql := fmt.Sprintf("Insert into  tba_account_post_positions(publish_no,user_id,position_name,position_desc,position_class,publish_time,expire_time,rewards,salary_min,salary_max,city,area,school_level,work_years,work_addr,contact_name,contact_phone,version)  values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
+	exeSql := fmt.Sprintf("Insert into  tba_account_post_positions(publish_no,user_id,position_name,position_emps,position_desc,position_class,publish_time,expire_time,rewards,salary_min,salary_max,city,area,sub_area,school_level,work_years,work_addr,contact_name,contact_phone,version)  values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
 	if r.Level == DEBUG {
 		log.Println(SQL_INSERT, exeSql)
 	}
-	_, err := r.DB.Exec(exeSql, p.PublishNo, p.UserId, p.PositionName, p.PositionDesc, p.PositionClass, p.PublishTime, p.ExpireTime, p.Rewards, p.SalaryMin, p.SalaryMax, p.City, p.Area, p.SchoolLevel, p.WorkYears, p.WorkAddr, p.ContactName, p.ContactPhone, p.Version)
+	_, err := r.DB.Exec(exeSql, p.PublishNo, p.UserId, p.PositionName, p.PositionEmps, p.PositionDesc, p.PositionClass, p.PublishTime, p.ExpireTime, p.Rewards, p.SalaryMin, p.SalaryMax, p.City, p.Area, p.SubArea, p.SchoolLevel, p.WorkYears, p.WorkAddr, p.ContactName, p.ContactPhone, p.Version)
 	if err != nil {
 		log.Println(SQL_ERROR, err.Error())
 		return err
@@ -676,6 +869,12 @@ func (r PostPositionList) InsertEntity(p PostPosition, tr *sql.Tx) error {
 		colNames += "position_name,"
 		colTags += "?,"
 		valSlice = append(valSlice, p.PositionName)
+	}
+
+	if p.PositionEmps != 0 {
+		colNames += "position_emps,"
+		colTags += "?,"
+		valSlice = append(valSlice, p.PositionEmps)
 	}
 
 	if p.PositionDesc != "" {
@@ -730,6 +929,12 @@ func (r PostPositionList) InsertEntity(p PostPosition, tr *sql.Tx) error {
 		colNames += "area,"
 		colTags += "?,"
 		valSlice = append(valSlice, p.Area)
+	}
+
+	if p.SubArea != "" {
+		colNames += "sub_area,"
+		colTags += "?,"
+		valSlice = append(valSlice, p.SubArea)
 	}
 
 	if p.SchoolLevel != "" {
@@ -894,6 +1099,11 @@ func (r PostPositionList) UpdataEntity(keyNo string, p PostPosition, tr *sql.Tx)
 		valSlice = append(valSlice, p.PositionName)
 	}
 
+	if p.PositionEmps != 0 {
+		colNames += "position_emps=?,"
+		valSlice = append(valSlice, p.PositionEmps)
+	}
+
 	if p.PositionDesc != "" {
 		colNames += "position_desc=?,"
 
@@ -944,6 +1154,12 @@ func (r PostPositionList) UpdataEntity(keyNo string, p PostPosition, tr *sql.Tx)
 		colNames += "area=?,"
 
 		valSlice = append(valSlice, p.Area)
+	}
+
+	if p.SubArea != "" {
+		colNames += "sub_area=?,"
+
+		valSlice = append(valSlice, p.SubArea)
 	}
 
 	if p.SchoolLevel != "" {

@@ -203,7 +203,7 @@ func (r BasecodeList) Get(s Search) (*Basecode, error) {
 		where += " and version=" + fmt.Sprintf("%d", s.Version)
 	}
 
-	qrySql := fmt.Sprintf("Select id,code_type,code_no,parent_code_no,code_val,flag,insert_time,update_time,version from tba_base_codes where 1=1 %s Limit %d offset %d", where, s.PageSize, (s.PageNo-1)*s.PageSize)
+	qrySql := fmt.Sprintf("Select id,code_type,code_no,parent_code_no,code_val,flag,insert_time,update_time,version from tba_base_codes where 1=1 %s ", where)
 	if r.Level == DEBUG {
 		log.Println(SQL_SELECT, qrySql)
 	}

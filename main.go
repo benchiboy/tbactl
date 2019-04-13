@@ -41,6 +41,8 @@ func go_WebServer() {
 	http.HandleFunc("/addPosition", position.AddPosition)
 	http.HandleFunc("/edtPosition", position.EdtPosition)
 	http.HandleFunc("/getPosition", position.GetPosition)
+	http.HandleFunc("/likePosition", position.LikePosition)
+	http.HandleFunc("/followPosition", position.FollowPosition)
 
 	http.HandleFunc("/getFlowList", flows.GetFlowsList)
 	http.HandleFunc("/addFlow", flows.AddFlow)
