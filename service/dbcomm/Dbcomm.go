@@ -9,9 +9,9 @@ var (
 	db *sql.DB
 )
 
-func InitDB() {
+func InitDB(dbUrl string, idleConns int, openConns int) {
 	var err error
-	db, err = sql.Open("mysql", "root:123456@tcp(10.193.1.155:3306)/tba2_db")
+	db, err = sql.Open("mysql", dbUrl)
 	if err != nil {
 		log.Println("Open database error:", err)
 		return
@@ -20,8 +20,8 @@ func InitDB() {
 		log.Println("Ping database error:", err)
 		return
 	}
-	db.SetMaxIdleConns(10)
-	db.SetMaxOpenConns(10)
+	db.SetMaxIdleConns(idleConns)
+	db.SetMaxOpenConns(openConns)
 	log.Println("Database Connected successful!")
 }
 

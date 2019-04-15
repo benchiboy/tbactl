@@ -1,8 +1,8 @@
 {
 	"config":{
 		"DB_URL": "crfqqxjd:27v+wVnahdEk@tcp(qq.mysql_m.crfchina.com:3306)/CTDB",
-		"REPAY_URL":"https://q.crfchina.com/baseRqt/repayDK",
-		"LIMIT_COUNT":5,
-		"SYNC_YTPE":0
+		"LISTEN":8000,
+		"OPEN_CONNS":120,
+		"IDLE_CONNS":120
 	}
 }

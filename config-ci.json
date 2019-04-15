@@ -1,8 +1,8 @@
 {
 	"config":{
-		"DB_URL": "szlocaldb:szcrf123@tcp(10.193.1.19:3306)/ct_db",
-		"REPAY_URL":"https://qq-ci.crfchina.com/qqagent/baseRqt/repayDK",
-		"LIMIT_COUNT":5,
-		"SYNC_YTPE":0
+		"DB_URL": "root:123456@tcp(localhost:3306)/tba2_db",
+		"LISTEN":8000,
+		"OPEN_CONNS":120,
+		"IDLE_CONNS":120
 	}
 }

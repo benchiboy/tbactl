@@ -23,33 +23,36 @@ const (
 )
 
 type Search struct {
-	Id            int64   `json:"id"`
-	PublishNo     string  `json:"publish_no"`
-	UserId        int64   `json:"user_id"`
-	PositionName  string  `json:"position_name"`
-	PositionEmps  int64   `json:"position_emps"`
-	PositionDesc  string  `json:"position_desc"`
-	PositionClass string  `json:"position_class"`
-	PublishTime   string  `json:"publish_time"`
-	ExpireTime    string  `json:"expire_time"`
-	Rewards       string  `json:"rewards"`
-	SalaryMin     float64 `json:"salary_min"`
-	SalaryMax     float64 `json:"salary_max"`
-	City          string  `json:"city"`
-	Area          string  `json:"area"`
-	SubArea       string  `json:"sub_area"`
-	SchoolLevel   string  `json:"school_level"`
-	WorkYears     string  `json:"work_years"`
-	WorkAddr      string  `json:"work_addr"`
-	ContactName   string  `json:"contact_name"`
-	ContactPhone  string  `json:"contact_phone"`
-	InsertTime    string  `json:"insert_time"`
-	UpdateTime    string  `json:"update_time"`
-	Version       int64   `json:"version"`
-	PageNo        int     `json:"page_no"`
-	PageSize      int     `json:"page_size"`
-	ExtraWhere    string  `json:"extra_where"`
-	SortFld       string  `json:"sort_fld"`
+	Id            int64  `json:"id"`
+	PublishNo     string `json:"publish_no"`
+	UserId        int64  `json:"user_id"`
+	PositionName  string `json:"position_name"`
+	PositionEmps  int64  `json:"position_emps"`
+	PositionDesc  string `json:"position_desc"`
+	PositionClass string `json:"position_class"`
+	PublishTime   string `json:"publish_time"`
+	ExpireTime    string `json:"expire_time"`
+	Rewards       string `json:"rewards"`
+
+	SalaryMin    float64 `json:"salary_min"`
+	SalaryMax    float64 `json:"salary_max"`
+	City         string  `json:"city"`
+	Area         string  `json:"area"`
+	SubArea      string  `json:"sub_area"`
+	SchoolLevel  string  `json:"school_level"`
+	WorkYears    string  `json:"work_years"`
+	WorkAddr     string  `json:"work_addr"`
+	ContactName  string  `json:"contact_name"`
+	ContactPhone string  `json:"contact_phone"`
+	InsertTime   string  `json:"insert_time"`
+	UpdateTime   string  `json:"update_time"`
+	Version      int64   `json:"version"`
+	SearchText   string  `json:"search_text"`
+
+	PageNo     int    `json:"page_no"`
+	PageSize   int    `json:"page_size"`
+	ExtraWhere string `json:"extra_where"`
+	SortFld    string `json:"sort_fld"`
 }
 
 type PostPositionList struct {
@@ -147,6 +150,10 @@ func (r *PostPositionList) GetTotal(s Search) (int, error) {
 
 	if s.PositionName != "" {
 		where += " and position_name='" + s.PositionName + "'"
+	}
+
+	if s.SearchText != "" {
+		where += " and position_name like '%" + s.SearchText + "%'"
 	}
 
 	if s.PositionEmps != 0 {
@@ -407,6 +414,10 @@ func (r *PostPositionList) GetList(s Search) ([]PostPosition, error) {
 
 	if s.PositionName != "" {
 		where += " and position_name='" + s.PositionName + "'"
+	}
+
+	if s.SearchText != "" {
+		where += " and position_name like '%" + s.SearchText + "%'"
 	}
 
 	if s.PositionEmps != 0 {
